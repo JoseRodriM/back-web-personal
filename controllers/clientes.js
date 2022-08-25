@@ -22,21 +22,21 @@ const addClientes = async(req, res)=>{
         text : `Hola ${newClient.name}, gracias por escribirnos, te confirmamos que nos ha llegado tu solicitud y será respondida en la brevedad posible, muchas gracias y buen día!!!`
     }
 
-    console.log(req.body)
     try{
         if(regexName(newClient.name) == true){
             if(regexEmail(newClient.email) == true){
                 try{
                     await newClient.save()
+                    console.log(newClient)
                     res.send()
                 }catch(err){res.send(err)}  
-                transporter.sendMail(mailOptions, function(error, info){
-                    if(error){
-                        console.log(error);
-                    }else{
-                        console.log('Email enviado: ' + info.response)
-                    }
-                })
+                // transporter.sendMail(mailOptions, function(error, info){
+                //     if(error){
+                //         console.log(error);
+                //     }else{
+                //         console.log('Email enviado: ' + info.response)
+                //     }
+                // })
 
             }else{
                 console.log('El Email no es válido')
