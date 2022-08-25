@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const cliente = require('../db/monbodb');
 const {regexName, regexEmail} = require('../utils/regex')
 const nodemailer = require('nodemailer');
+const { Code } = require('mongodb');
 require('dotenv').config()
 
 const addClientes = async(req, res)=>{
@@ -25,15 +26,18 @@ const addClientes = async(req, res)=>{
     try{
         if(regexName(newClient.name) == true){
             if(regexEmail(newClient.email) == true){
-                await newClient.save()
-                // transporter.sendMail(mailOptions, function(error, info){
-                //     if(error){
-                //         console.log(error);
-                //     }else{
-                //         console.log('Email enviado: ' + info.response)
-                //     }
-                // })
-            .then(response => console.log(response))
+                try{
+                    await newClient.save()
+                    res.send()
+                }catch(err){res.send(err)}  
+                transporter.sendMail(mailOptions, function(error, info){
+                    if(error){
+                        console.log(error);
+                    }else{
+                        console.log('Email enviado: ' + info.response)
+                    }
+                })
+
             }else{
                 console.log('El Email no es válido')
             }
@@ -43,7 +47,7 @@ const addClientes = async(req, res)=>{
     }catch(err){
         console.log(err)
     }
-    res.send()
+    
 }
 
 module.exports =  {addClientes}
